@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "ipersonal",
+    "slug": "ipersonal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#282828"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#282828"
+      },
+      "package": "com.marthins.ipersonal"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permitir $(PRODUCT_NAME) acessar sua câmera."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "94491699-6357-4ccf-bd1c-b4ac28933751"
+      }
+    }
+  }
+}
