@@ -18,7 +18,7 @@ const LoginScreen = ({ route, navigation }) => {
     const [isSecure, setIsSecure] = useState(true)
     const [error, setError] = useState(null)
     const [msgErrorSenha, setMsgErrorSenha] = useState('')
-    const [maskedValue, setMaskedValue] = useState('')
+    const [maskedValue, setMaskedValue] = useState('amarthins2010@gmail.com')
     const [loading, setLoading] = useState(true)
 
     const constraints = {
