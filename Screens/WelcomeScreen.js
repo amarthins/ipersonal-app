@@ -3,6 +3,7 @@ import { TouchableOpacity, ScrollView, ImageBackground, Alert, Image, Button, Te
 import styles from '../src/styles'
 import { SafeAreaView } from "react-native-safe-area-context"
 import * as Animatable from 'react-native-animatable'
+import { Ionicons } from "@expo/vector-icons"
 
 const WelcomeScreen = ({ route, navigation }) => {
 
@@ -18,6 +19,13 @@ const WelcomeScreen = ({ route, navigation }) => {
       <ImageBackground
         source={require("../src/assets/personal-aluna.png")}
         style={styles.background}>
+
+          <TouchableOpacity 
+          style={{position:'absolute',top:'20%',right:'3%'}}
+          onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="close-circle-outline" size={40} color="#FFF" />
+          </TouchableOpacity>
 
         <View style={styles.wrapperLogo}>
           <Animatable.Image

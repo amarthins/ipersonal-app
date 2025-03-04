@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import { View, Text, ImageBackground, StatusBar, KeyboardAvoidingView, ScrollView, Image, TouchableOpacity } from 'react-native'
 import * as Animatable from 'react-native-animatable'
+import { Calendar, LocaleConfig } from 'react-native-calendars'
+import { ptBr } from '../src/utils/localeCalendarConfig'
 import { SafeAreaView } from "react-native-safe-area-context"
-import { TextInput, Avatar, Select, SelectItem, } from 'react-native-paper'
+import config from '../src/config/index.json'
+import { TextInput } from 'react-native-paper'
 import styles from '../src/styles';
 import { Ionicons } from "@expo/vector-icons"
 import { AuthContext } from '../src/context/auth'
 import { unMask, mask } from 'remask'
 import validate from 'validate.js'
-import { FlashList } from '@shopify/flash-list'
-import { Picker } from '@react-native-picker/picker'
-import config from '../src/config/index.json'
-
 import backgroundImage from '../src/assets/personal-aluna.png'
+import moment from 'moment'
 
-const DashPersonal = ({ route, navigation }) => {
+LocaleConfig.locales['pt-br'] = ptBr
+LocaleConfig.defaultLocale = 'pt-br'
+
+const AddSolicitacao = ({ route, navigation }) => {
 
     const { getObject, signOut, storeObject, removeValue, getServices, formataNome, updtCadastro } = useContext(AuthContext)
 
     const [user, setUser] = useState(null)
+    const [day, setDay] = useState(null)
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', async () => {
@@ -35,53 +39,59 @@ const DashPersonal = ({ route, navigation }) => {
         return unsubscribe
     }, [navigation])
 
+    const handleAccess = async () => {
+        console.log('salvar')
+    }
+
     return (
         <SafeAreaView style={styles.safeContainer}>
-            <StatusBar style={{}} />
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                <Image
-                    style={styles.avatar}
-                    source={{ uri: config.site_url + '/public/images/avatar/' + user?.id + '.png' }}
-                />
-                <Text style={[styles.textoLabel, { color: '#FFF' }]}>{user?.nome}</Text>
-            </View>
-
-            <View style={styles.divisionLine} />
 
             <View style={styles.wrapperContent}>
+
+                <Text style={[styles.textoLabel, { marginTop: 30 }]}>Solicitação de Serviços</Text>
+                <Text style={styles.textoRegular}>Dia:</Text>
+                <Text style={styles.textoRegular}>Mês:</Text>
+                <Text style={styles.textoRegular}>Ano:</Text>
+
+                <Text style={styles.textoRegular}>Selecione o local ou pesquise por profissionais na proximidade</Text>
+                <Text style={styles.textoRegular}>Selecione a categoria</Text>
+                <Text style={styles.textoRegular}>Selecione a atividade</Text>
+
+                <View style={styles.divisionLine} />
+
+                <Text style={styles.textoRegular}>Seleção realizada:</Text>
+                <Text style={styles.textoRegular}>Dia xx/xx/aaaa  Atividade: treino funcional Local: Academia Um
+                    Profissional: Personal Um</Text>
+
                 <TouchableOpacity
-                    style={{
-                        width: '100%', alignItems: 'center', justifyContent: 'flex-start',
-                        flexDirection: 'row'
-                    }}
-                    onPress={() => console.log('chama agenda')}>
-                    <Ionicons name={'calendar-outline'} size={22} style={{ marginRight: 10, color: '#F42302', }} />
-                    <Text style={[styles.textoLabel, { color: '#FFF', lineHeight: 50, }]}>Agenda do dia</Text>
+                    style={[styles.btnStandard, { marginTop: 20 }]}
+                    onPress={handleAccess}>
+                    <Text style={styles.textoBtn}>Entrar</Text>
                 </TouchableOpacity>
-                <Text style={{ color: '#FFF' }}>linha</Text>
-                <Text style={{ color: '#FFF' }}>linha</Text>
-                <Text style={{ color: '#FFF' }}>linha</Text>
+
+                <View style={[styles.divisionLine, { marginBottom: 30 }]} />
+
             </View>
 
             <View style={styles.lineBottom}>
                 <TouchableOpacity
                     style={styles.btnBottom}
-                    onPress={() => navigation.navigate('AgendaPersonal')}>
-                    <Ionicons name={'calendar'} size={30} style={{ color: '#0F0', }} />
+                    onPress={() => { }}>
+                    <Ionicons name={'calendar'} size={30} style={{ color: '#888', }} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.btnBottom}
-                    onPress={() => navigation.navigate('SettingsPersonal')}>
-                    <Ionicons name={'settings'} size={30} style={{ color: '#0F0', }} />
+                    onPress={() => navigation.navigate('HistoricoAluno')}>
+                    <Ionicons name={'timer'} size={30} style={{ color: '#0F0', }} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.btnBottom}
-                    onPress={() => {}}>
-                    <Ionicons name={'home'} size={30} style={{ color: '#888', }} />
+                    onPress={() => navigation.navigate('DashAluno')}>
+                    <Ionicons name={'home'} size={30} style={{ color: '#F54', }} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.btnBottom}
-                    onPress={() => navigation.navigate('AccountPersonal')}>
+                    onPress={() => navigation.navigate('AccountAluno')}>
                     <Ionicons name={'person'} size={30} style={{ color: '#0F0', }} />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -91,7 +101,7 @@ const DashPersonal = ({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
-    );
-}
+    )
 
-export default DashPersonal
+}
+export default AddSolicitacao

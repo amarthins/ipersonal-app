@@ -9,17 +9,22 @@ import { AuthContext } from '../src/context/auth'
 import { unMask, mask } from 'remask'
 import validate from 'validate.js'
 import backgroundImage from '../src/assets/personal-aluna.png'
+import MessageArea from "../src/components/MessageArea"
+import ModalComponent from "../src/components/ModalComponent"
 
 const LoginScreen = ({ route, navigation }) => {
 
     const { signIn } = useContext(AuthContext)
 
-    const [senha, setSenha] = useState('1234')
+    const [senha, setSenha] = useState('')
     const [isSecure, setIsSecure] = useState(true)
     const [error, setError] = useState(null)
     const [msgErrorSenha, setMsgErrorSenha] = useState('')
-    const [maskedValue, setMaskedValue] = useState('amarthins2010@gmail.com')
+    const [maskedValue, setMaskedValue] = useState('')
     const [loading, setLoading] = useState(true)
+    const [visible, setVisible] = useState(false)
+    const [titleModal, setTitleModal] = useState(null)
+    const [contentModal, setContentModal] = useState(null)
 
     const constraints = {
         email: {
@@ -48,15 +53,18 @@ const LoginScreen = ({ route, navigation }) => {
 
     const formatPhone = (value) => {
         const originalFone = unMask(value);
-        const maskedFone = mask(originalFone, ['(99) 9999-9999', '(99) 99999-9999']);
-        return maskedFone;
+        if(originalFone.length>4)
+        {
+            const maskedFone = mask(originalFone, ['(99) 9999-9999', '(99) 99999-9999']);
+            return maskedFone;
+        }
+        return value
     }
 
     const handleChange = (value) => {
         setError('')
         const rawValue = unMask(value)
         const isNumeric = /^\d+$/.test(rawValue)
-
         if (isNumeric) {
             const formattedPhone = formatPhone(value)
             setMaskedValue(formattedPhone)
@@ -64,8 +72,6 @@ const LoginScreen = ({ route, navigation }) => {
             setMaskedValue(value)
         }
     }
-
-
 
     const validaSenha = (val) => {
 
@@ -81,6 +87,12 @@ const LoginScreen = ({ route, navigation }) => {
         setSenha(valor)
     }
 
+    const closeModal = () => {
+        setVisible(false)
+    }
+    const navegaTela = () => {
+        navigation.navigate('RecuperaSenha')
+    }
 
     const handleAccess = async () => {
         setMsgErrorSenha('')
@@ -90,12 +102,14 @@ const LoginScreen = ({ route, navigation }) => {
 
         let valida = true
         let msgErro = ''
+        let erroType = 0
         let login = null
 
         if (isNumeric) {
             if (rawValue.length < 10 || rawValue.length > 11) {
                 valida = false
                 msgErro = 'O telefone não está correto.'
+                erroType = 1
             } else {
                 login = rawValue
             }
@@ -104,6 +118,7 @@ const LoginScreen = ({ route, navigation }) => {
             if (!valida) {
                 valida = false
                 msgErro += '\nO e-mail não está correto.'
+                erroType = 2
             }
             login = maskedValue
         }
@@ -111,6 +126,7 @@ const LoginScreen = ({ route, navigation }) => {
         if (senha.trim().length !== 4) {
             msgErro = 'Corrija o valor da senha'
             valida = false
+            erroType = 3
         }
 
         if (!valida) {
@@ -121,15 +137,19 @@ const LoginScreen = ({ route, navigation }) => {
         const logar = await signIn(login, senha)
 
         if (logar.status === 201) {
-            setMsgErrorSenha('Usuário não identificado')
+            setTitleModal('Erro ao logar')  
+            setContentModal('Dados inválidos. Verifique se a identificação e senha estão sendo preenchidos corretamente.')
+            setVisible(true)
+            //setMsgErrorSenha('Usuário não identificado')
             return
         } else if (logar.status === 202) {
-            setMsgErrorSenha('Senha não confere')
+            setTitleModal('Erro ao logar')  
+            setContentModal('Dados inválidos. Verifique se a identificação e senha estão sendo preenchidos corretamente.')
+            setVisible(true)
+            //setMsgErrorSenha('Senha não confere')
             return
         }
-
-        setMsgErrorSenha('Falha ao logar')
-
+        //setMsgErrorSenha('Falha ao logar')
     }
 
     if (loading) {
@@ -146,6 +166,8 @@ const LoginScreen = ({ route, navigation }) => {
                 source={backgroundImage}
                 style={[styles.background, { paddingLeft: '5%', paddingRight: '5%' }]}>
 
+                <MessageArea visible={visible} closeModal={closeModal} navegaTela={navegaTela} title={titleModal} content={contentModal} />
+
                 <View style={styles.wrapperLogo}>
                     <Animatable.Image
                         delay={300}
@@ -159,7 +181,7 @@ const LoginScreen = ({ route, navigation }) => {
 
                     <View style={{ height: 100, backgroundColor: 'transparent' }}>
                         <Text style={[styles.textoLabel, { color: '#FFF' }]}>Seja Bem-vindo</Text>
-                        <Text style={[styles.textoLabel, { color: '#FFF' }]}>Acesse seu cadastro de forma rápida e segura!</Text>
+                        <Text style={[styles.textoRegular, { color: '#FFF' }]}>Acesse seu cadastro de forma rápida e segura!</Text>
                     </View>
 
                     <View style={styles.blockInputsLogin}>
@@ -171,7 +193,7 @@ const LoginScreen = ({ route, navigation }) => {
                             activeUnderlineColor="transparent"
                             onChangeText={handleChange}
                             value={maskedValue}
-                            left={<TextInput.Icon icon="phone" style={{ paddingTop: 10 }} size={25} />}
+                            left={<TextInput.Icon icon="account" style={{ paddingTop: 10 }} size={25} />}
                             keyboardType="default"
                         />
                         <View style={styles.wrapperError}>
@@ -203,7 +225,8 @@ const LoginScreen = ({ route, navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                            style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}
+                            onPress={() => navigation.navigate('RecuperaSenha')}>
                             <Text style={[styles.textoRegular, { color: '#FF0' }]}>Esqueceu sua senha?</Text>
                         </TouchableOpacity>
                     </View>
@@ -218,6 +241,7 @@ const LoginScreen = ({ route, navigation }) => {
                         <Text style={[styles.textoRegular, { color: '#FFF', paddingTop: 0, }]}>{'  '}Crie agora</Text>
                     </TouchableOpacity>
                 </View>
+                <Text style={[styles.textoRegular, { color: '#FFF', paddingTop: 0, }]}>{'  '}Versão homologacao 1.0.0</Text>
 
             </ImageBackground>
         </SafeAreaView>

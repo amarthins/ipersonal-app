@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ipersonal",
-    "slug": "ipersonal",
-    "version": "1.0.0",
+    "name": "i-personal",
+    "slug": "i-personal",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -12,14 +12,29 @@
       "backgroundColor": "#282828"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyDB-WFgQkWxR4CDCkvYc0_Kki49baoc5i4"
+      }
     },
     "android": {
+      "versionCode": 101,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#282828"
       },
-      "package": "com.marthins.ipersonal"
+      "package": "app.br.ipersonal",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDB-WFgQkWxR4CDCkvYc0_Kki49baoc5i4"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,11 +46,18 @@
         {
           "cameraPermission": "Permitir $(PRODUCT_NAME) acessar sua câmera."
         }
+      ],
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "O app precisa da sua localização para mostrar academias próximas."
+        }
       ]
     ],
     "extra": {
       "eas": {
-        "projectId": "94491699-6357-4ccf-bd1c-b4ac28933751"
+        "projectId": "08038f39-4332-47ea-b8ad-e2484cdbd6d6"
       }
     }
   }

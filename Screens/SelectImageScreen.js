@@ -27,14 +27,10 @@ const SelectImageScreen = ({ route, navigation }) => {
             const foto = await getObject('@avatar')
             //await removeValue('@avatar')
 
-            console.log('FOTO ', foto)
-
             if (foto !== null) {
-
                 //values.push(foto.uri)
                 setDocuments(foto.uri)
             }
-
             setTimeout(() => {
                 //setLoading(false);
             }, 1000);
@@ -63,7 +59,6 @@ const SelectImageScreen = ({ route, navigation }) => {
                 values.push(result.assets[0].uri)
                 setDocuments(values)
                 await storeObject('@docsConsultas', values)
-                console.log('Arquivo selecionado:', result.assets[0].uri)
                 setRefresh(prevState => !prevState);
             } else {
                 alert('Por favor, selecione apenas um arquivo de imagem ou PDF.');

@@ -12,11 +12,12 @@ import { AuthContext } from '../src/context/auth'
 import { unMask, mask } from 'remask'
 import validate from 'validate.js'
 import backgroundImage from '../src/assets/personal-aluna.png'
+import moment from 'moment'
 
 LocaleConfig.locales['pt-br'] = ptBr
 LocaleConfig.defaultLocale = 'pt-br'
 
-const AgendaPersonal = ({ route, navigation }) => {
+const AddSolicitacao = ({ route, navigation }) => {
 
     const { getObject, signOut, storeObject, removeValue, getServices, formataNome, updtCadastro } = useContext(AuthContext)
 
@@ -38,56 +39,37 @@ const AgendaPersonal = ({ route, navigation }) => {
         return unsubscribe
     }, [navigation])
 
+    const handleAccess = async () => {
+        console.log('salvar')
+    }
+
     return (
         <SafeAreaView style={styles.safeContainer}>
 
             <View style={styles.wrapperContent}>
-                <View style={{ width: '100%' }}>
-                    <Calendar
-                        style={styles.calendar}
-                        headerStyle={{
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: '#E8E8E8',
-                            paddingBottom: 10,
-                            marginBottom: 10,
-                        }}
-                        theme={{
-                            textMonthFontSize: 18,
-                            monthTextColor: '#E8E8E8',
-                            todayTextColor: '#F54',
-                            selectedDayBackgroundColor: '#0F0',
-                            selectedDayTextColor: '#000',
-                            arrowColor: '#0F0',
-                            arrowStyle: {
-                                margin: 0,
-                                padding: 0,
-                            },
-                            calendarBackground: 'transparent',
-                            dayTextColor: '#E8E8E8',
-                            textDisabledColor: '#717171'
-                        }}
-                        minDate={new Date().toDateString()}
-                        hideExtraDays
-                        onDayPress={setDay}
-                        markedDates={day && {
-                            [day.dateString]: { selected: true }
-                        }}
-                    />
-                </View>
+
+                <Text style={[styles.textoLabel, { marginTop: 30 }]}>Solicitação de Serviços</Text>
+                <Text style={styles.textoRegular}>Dia:</Text>
+                <Text style={styles.textoRegular}>Mês:</Text>
+                <Text style={styles.textoRegular}>Ano:</Text>
+
+                <Text style={styles.textoRegular}>Selecione o local ou pesquise por profissionais na proximidade</Text>
+                <Text style={styles.textoRegular}>Selecione a categoria</Text>
+                <Text style={styles.textoRegular}>Selecione a atividade</Text>
+
+                <View style={styles.divisionLine} />
+
+                <Text style={styles.textoRegular}>Seleção realizada:</Text>
+                <Text style={styles.textoRegular}>Dia xx/xx/aaaa  Atividade: treino funcional Local: Academia Um
+                    Profissional: Personal Um</Text>
 
                 <TouchableOpacity
-                    style={{
-                        width: '100%', alignItems: 'center', justifyContent: 'flex-start',
-                        flexDirection: 'row'
-                    }}
-                    onPress={() => console.log('chama agenda')}>
-                    <Ionicons name={'calendar-outline'} size={22} style={{ marginRight: 10, color: '#F42302', }} />
-                    <Text style={[styles.textoLabel, { color: '#FFF', lineHeight: 80, }]}>Agenda do dia {day?.dateString}</Text>
+                    style={[styles.btnStandard, { marginTop: 20 }]}
+                    onPress={handleAccess}>
+                    <Text style={styles.textoBtn}>Entrar</Text>
                 </TouchableOpacity>
-                <View style={{}}>
-                    <Text style={[styles.textoRegular, { color: '#FFF' }]}>09:00 - Academia Um - Treino Funcional</Text>
-                    <Text style={[styles.textoRegular, { color: '#FFF' }]}>11:00 - Academia Dois - Personal</Text>
-                </View>
+
+                <View style={[styles.divisionLine, { marginBottom: 30 }]} />
 
             </View>
 
@@ -99,17 +81,17 @@ const AgendaPersonal = ({ route, navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.btnBottom}
-                    onPress={() => navigation.navigate('SettingsPersonal')}>
-                    <Ionicons name={'settings'} size={30} style={{ color: '#0F0', }} />
+                    onPress={() => navigation.navigate('HistoricoAulas')}>
+                    <Ionicons name={'timer'} size={30} style={{ color: '#0F0', }} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.btnBottom}
-                    onPress={() => navigation.navigate('DashPersonal')}>
+                    onPress={() => navigation.navigate('DashAluno')}>
                     <Ionicons name={'home'} size={30} style={{ color: '#F54', }} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.btnBottom}
-                    onPress={() => navigation.navigate('AccountPersonal')}>
+                    onPress={() => navigation.navigate('AccountScreen')}>
                     <Ionicons name={'person'} size={30} style={{ color: '#0F0', }} />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -122,4 +104,4 @@ const AgendaPersonal = ({ route, navigation }) => {
     )
 
 }
-export default AgendaPersonal
+export default AddSolicitacao

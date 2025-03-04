@@ -5,6 +5,7 @@ import { Text, Button, TouchableOpacity, View, ActivityIndicator } from 'react-n
 import { Ionicons } from "@expo/vector-icons"
 import styles from '../src/styles'
 import { AuthContext } from '../src/context/auth'
+import { LocalTile } from "react-native-maps"
 
 
 const CameraScreen = ({ navigation, route }) => {
@@ -24,14 +25,10 @@ const CameraScreen = ({ navigation, route }) => {
     useEffect(() => {
         const unsubscribeFocus = navigation.addListener('focus', () => {
             setIsCameraReady(true)
-            console.log('referencia', referencia)
-
         });
-
         const unsubscribeBlur = navigation.addListener('blur', () => {
             setIsCameraReady(false)
         });
-
         return () => {
             unsubscribeFocus();
             unsubscribeBlur();
@@ -39,7 +36,6 @@ const CameraScreen = ({ navigation, route }) => {
     }, [navigation]);
 
     const takePicture = async () => {
-        //setLoading(true)
         if (cameraRef) {
 
             const photo = await cameraRef.current.takePictureAsync({ base64: true })
@@ -51,17 +47,15 @@ const CameraScreen = ({ navigation, route }) => {
                 { compress: 1, format: SaveFormat.PNG, base64: false }
             )
 
-            console.log('RESIZ FOT', resizedPhoto.uri)
-
             if (resizedPhoto.uri != null) {
-                if (referencia === 'PendingScreen') {
+                if (referencia === 'PendingScreen' || referencia === 'AccountPersonal') {
 
-                    await storeObject('@avatar', resizedPhoto)
+                    await storeObject('@avatar', resizedPhoto.uri)
 
                 } else if (referencia === 'SelectImageScreen') {
-                    
+
                     await storeObject('@avatar', resizedPhoto)
-                    
+
                 } else if (referencia === 'MomentosForm') {
                     await storeObject('@fotos', resizedPhoto)
                 } else if (referencia === 'ListaFiles') {
@@ -69,7 +63,7 @@ const CameraScreen = ({ navigation, route }) => {
                 } else {
                     await storeObject('@imagem', resizedPhoto)
                 }
-                setLoading(false)
+                //setLoading(false)
                 navigation.navigate(referencia)
 
             } else {
@@ -98,14 +92,14 @@ const CameraScreen = ({ navigation, route }) => {
     if (!permission.granted) {
         return (
             <View style={styles.containerLoading}>
-                <Text style={[styles.textoLabel,{color:'#FFF'}]}>
+                <Text style={[styles.textoLabel, { color: '#FFF' }]}>
                     Você precisa permitir o uso da câmera!{'\n'}
                 </Text>
                 <TouchableOpacity
                     onPress={() => requestPermission()}
                     style={styles.btnScreen}
                 >
-                    <Text style={[styles.textoLabel,{color:'#FFF'}]}>
+                    <Text style={[styles.textoLabel, { color: '#FFF' }]}>
                         AUTORIZAR O USO
                     </Text>
                 </TouchableOpacity>

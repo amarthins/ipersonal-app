@@ -173,6 +173,7 @@ const CadastroScreen = ({ route, navigation }) => {
                                 activeUnderlineColor="transparent"
                                 onChangeText={(item) => updateFields(item, 'nome')}
                                 value={dados?.nome}
+                                left={<TextInput.Icon icon="account" style={{ paddingTop: 10 }} size={25} />}
                                 keyboardType="default"
                             />
 
@@ -185,6 +186,7 @@ const CadastroScreen = ({ route, navigation }) => {
                                     activeUnderlineColor="transparent"
                                     onChangeText={(text) => handleChange(text, 'number')}
                                     value={maskedValue}
+                                    left={<TextInput.Icon icon="phone" style={{ paddingTop: 10 }} size={25} />}
                                     keyboardType="number-pad"
                                 />
                                 :
@@ -196,6 +198,7 @@ const CadastroScreen = ({ route, navigation }) => {
                                     activeUnderlineColor="transparent"
                                     onChangeText={(text) => handleChange(text, 'email')}
                                     value={maskedValue}
+                                    left={<TextInput.Icon icon="email" style={{ paddingTop: 10 }} size={25} />}
                                     keyboardType="default"
                                 />}
 

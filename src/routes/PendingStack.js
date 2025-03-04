@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import PendingScreen from '../../ScreenAuth/PendingScreen'
+
+import PendingScreen from '../../Screens/PendingScreen'
 import CameraScreen from '../../Screens/CameraScreen'
 import SelectImageScreen from '../../Screens/SelectImageScreen'
 
@@ -16,6 +17,5 @@ const PendingStack = () => {
             <Stack.Screen name="SelectImageScreen" component={SelectImageScreen} />
         </Stack.Navigator>
     )
-
 }
 export default PendingStack

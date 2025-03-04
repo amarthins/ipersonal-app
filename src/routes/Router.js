@@ -4,6 +4,10 @@ import AuthAluno from './AuthAluno'
 import AuthPersonal from './AuthPersonal'
 import { AuthContext } from '../context/auth'
 import PendingStack from './PendingStack'
+import NoNetwork from '../../Screens/CadastroScreen'
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 const Router = () => {
 
@@ -13,6 +17,7 @@ const Router = () => {
     const [usr, setUsr] = useState(false)
 
     const [isVerified, setIsVerified] = useState(logado)
+    const { isConnected } = useContext(AuthContext); // Obtendo o estado de conexão
 
     useEffect(() => {
         const checkLoginStatus = async () => {
@@ -32,6 +37,13 @@ const Router = () => {
         checkLoginStatus();
     }, [changeState]);
 
+    if (!isConnected) {
+        return(
+            <Stack.Navigator>
+                <Stack.Screen name="NoNetwork" component={NoNetwork} />
+            </Stack.Navigator>
+        )
+    }
 
     if (isVerified && usr && tkn) {
         if (usr.posicao === 'pendente') {
